@@ -37,11 +37,23 @@ print("number of anime needed to insert: " + str(len(anime_id_set)))
 
 sql = "INSERT TitleWord VALUES (%s, %s)"
 
+def clearKeyWord(word):
+    toRet = ''
+    for letter in word:
+        if (ord(letter) >= ord('a') and ord(letter) <= ord('z')) or (ord(letter) >= ord('A') and ord(letter) <= ord('Z')):
+            toRet += letter
+    
+    return toRet
+
 for index, row in anime.iterrows():
     if row['anime_id'] in anime_id_set:
         try:
             wordSet = set(row['name'].split(' '))
+            wordSet = map(clearKeyWord, wordSet)
             for word in wordSet:
+                if word == '':
+                    continue
+                
                 val = int(row['anime_id']), word
                 execCom(sql, val)
                 cPrint += 1
