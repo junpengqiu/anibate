@@ -14,6 +14,11 @@ http.createServer(function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // var q = url.parse(req.url, true).query;
     console.log('redirecting req and res');
-    queryAnime(req,res);
-    // res.end(JSON.stringify({err:null,msg:'shuai'}));
+
+    let pathname = url.parse(req.url, true).pathname;
+    if(pathname === '/query'){
+        queryAnime(req,res);
+    }else{
+        res.end(JSON.stringify({err:'unknow pathname'}));
+    }
 }).listen(PORT);
