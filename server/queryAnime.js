@@ -1,4 +1,5 @@
 var url = require('url');
+var request = require('request');
 
 var con = require('./db.js').con;
 
@@ -39,6 +40,21 @@ var condGen = function(params){
     return joinAndIfExisit([keywordsCond, typeCond, genresCond]);
 }
 
+var getPicRecursive = function(res, req, results, curPos){
+    if (curPos == idArr.length){
+        res.end(JSON.stringify(results));
+        return;
+    }
+
+    request({
+        url: `https://api.jikan.moe/v3/anime/${(results[curPos]).id}/pictures`, 
+        json: true
+    }, function(err, resp, body){
+        (results[curPos]).img = body.pictures ? (body.pictures[0]).large : null;
+        getPicRecursive(res, req, results, curPos + 1);
+    });
+}
+
 var queryAnime = function(req, res){
     let params = url.parse(req.url, true).query;
     console.log(`params are ${JSON.stringify(params)}`);
@@ -47,7 +63,13 @@ var queryAnime = function(req, res){
     console.log(`sql: ${sql}`);
     con.query(sql, function(err, results, fields){
         if(err) throw err;
-        res.end(JSON.stringify(results));
+        if(!results){
+            res.end(JSON.stringify(results));
+        }else{
+            idArr = results.map((result)=>result.id);
+            getPicRecursive(res, req, results, 0);
+        }
+        
     });
 };
 

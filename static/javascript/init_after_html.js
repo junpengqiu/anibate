@@ -8,6 +8,9 @@ navbarElements.root = document.getElementById('navbar_root');
 coverElements.root = document.getElementById('cover_root');
 coverElements.image = document.getElementById('cover_image');
 
+// queryElements completion
+queryElements.root = document.getElementById('query_root');
+
 // Init the Elements attr based on current data and etc.
 // navbarElements init
 

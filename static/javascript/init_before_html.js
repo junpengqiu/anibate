@@ -3,6 +3,7 @@
 
 var navbarElements = {};
 var coverElements = {};
+var queryElements = {};
 
 // Init the Elements method
 // navbar method
