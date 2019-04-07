@@ -34,8 +34,10 @@ var goEnglish = function(){
 };
 
 var beforeResultsReturn = function(){
-    // Title becomes japanese
-    goJapanese();
+    // loading status
+    doLoading();
+
+    // draw Image to show
     coverElements.drawImageToShow();
 
     // hide the results
@@ -50,11 +52,21 @@ var whenResultsReturn = function(resp_animes){
     queryElements.renderResults(resp_animes);
 
     // hide the results instruction
-    queryElements.instruct = false;
+    queryElements.instruct.hidden = true;
 
     // unhide the results
-    queryElements.results.hidden = true;
+    queryElements.results.hidden = false;
 
-    // Title comes back to English
-    goEnglish();
+    // loaded status
+    doLoaded();
 };
+
+var doLoading = function(){
+    goJapanese();
+    navbarElements.loading.hidden = false;
+}
+
+var doLoaded = function(){
+    goEnglish();
+    navbarElements.loading.hidden = true;
+}

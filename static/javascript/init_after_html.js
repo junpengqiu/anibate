@@ -1,9 +1,16 @@
 // to be the end of <body>
 
+// check who is signed in if any
+bator.checkId();
+
 // fill in main section variables with elements
 // navbarElements completion
 navbarElements.root = document.getElementById('navbar_root');
 navbarElements.title = document.getElementById('navbar_title');
+navbarElements.loading = document.getElementById('navbar_loading');
+navbarElements.signup = document.getElementById('navbar_signup');
+navbarElements.login = document.getElementById('navbar_login');
+navbarElements.logout = document.getElementById('navbar_logout');
 
 // coverElements completion
 coverElements.root = document.getElementById('cover_root');

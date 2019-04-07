@@ -10,6 +10,16 @@ var commentElements = {};
 // navbar method
 navbarElements.goJapanese = function(){this.title.textContent = 'アニベート'};
 navbarElements.goEnglish = function(){this.title.textContent = 'Anibate'};
+navbarElements.doBatorSigned = function(){
+  this.logout.hidden = false;
+  this.login.hidden = true;
+  this.signup.hidden = true;
+};
+navbarElements.doBatorNotSigned = function(){
+  this.logout.hidden = true;
+  this.login.hidden = false;
+  this.signup.hidden = false;
+};
 
 // cover method
 coverElements.drawImageToShow = function(){this.image.src = cover_imageUrlPile[drawIntBelow(cover_imageUrlPile.length)]};
@@ -87,7 +97,7 @@ queryElements.renderResults = function(resp_amimes){
 
 queryElements.getResultHtml = function(anime_json){
   return `
-    <div class="w3-row-padding">
+    <div data-aid="${anime_json.id}" class="w3-row-padding">
       <div class="w3-quarter w3-margin-bottom">
         <div class="w3-display-container">
           <img src="${anime_json.img}" alt="House" style="width:100%">
@@ -96,7 +106,9 @@ queryElements.getResultHtml = function(anime_json){
 
       <div class="w3-threequarter w3-margin-bottom">
         <p>
-          <b>${anime_json.name}</b>
+          <a data-aid="${anime_json.id}" onclick="bator.setAnimeId(this.dataset.aid); queryElements.focusOnSelectedAid()">
+            <b>${anime_json.name}</b>
+          </a>
         </p>
         <p>
           episodes: ${anime_json.episodes}
@@ -111,6 +123,35 @@ queryElements.getResultHtml = function(anime_json){
     </div>
   `;
 };
+
+queryElements.focusOnSelectedAid = function(){
+  if(!bator.selectedAnimeId){
+    console.log('no animes selected :(')
+    return;
+  }
+  let allQueryItems = document.querySelectorAll('div[data-aid]');
+  allQueryItems.forEach((ele,eleIdx,nodeListCaller) => {
+    if(ele.dataset.aid !== bator.selectedAnimeId)
+      ele.hidden = true;
+  });
+};
+
+// init user
+var bator = {};
+
+// user method
+bator.checkId = function(){
+  // set checking to prevent posting comments during checking
+  bator.checking = true;
+
+  // navbarElements signed
+  // doLoaded
+  // bator.checking = false;
+}
+
+bator.setAnimeId = function(aid){
+  this.selectedAnimeId = aid;
+}
 
 // init miscellaneous
 // the cover picture url is randomly picked from one below
