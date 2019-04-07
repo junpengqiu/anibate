@@ -4,12 +4,113 @@
 var navbarElements = {};
 var coverElements = {};
 var queryElements = {};
+var commentElements = {};
 
 // Init the Elements method
 // navbar method
+navbarElements.goJapanese = function(){this.title.textContent = 'アニベート'};
+navbarElements.goEnglish = function(){this.title.textContent = 'Anibate'};
 
 // cover method
 coverElements.drawImageToShow = function(){this.image.src = cover_imageUrlPile[drawIntBelow(cover_imageUrlPile.length)]};
+coverElements.goJapanese = function(){this.title.textContent = 'アニベート'};
+coverElements.goEnglish = function(){this.title.textContent = 'Anibate'};
+
+// query method
+queryElements.search = function(){
+  let keywords = this.getParamKeywords();
+  if(!keywords){
+    window.alert('need keyword(s)!');
+    return;
+  }
+  let typeParam = this.getParamType();
+  let genres = this.getParamGenres();
+  // console.log(keywords);
+  // console.log(typeParam);
+  // console.log(genres);
+  let urlToReq = `http://104.248.124.26:9000/query?${joinAndIfExisit([keywords,typeParam,genres])}`;
+  console.log(`requesting ${urlToReq}`);
+
+  // render what the page is gonna like before results return
+  beforeResultsReturn();
+  
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
+      // array of anime jsons
+      let resp_animes = JSON.parse(this.responseText);
+      // pass the resp_amimes to render what to disp after results return
+      whenResultsReturn(resp_animes);
+    }
+    if (this.readyState == 4)
+      goEnglish()
+  };
+  xhttp.open("GET", urlToReq, true);
+  xhttp.send();
+};
+
+queryElements.getParamKeywords = function(){
+  let val = queryElements.keywords.value.trim();
+  val = val.split(' ')
+  if (val.length == 0)
+    return null;
+  return `keywords=${val.join(',')}`;
+};
+
+queryElements.getParamType = function(){
+  let radios = document.querySelectorAll(`input[name='type']`);
+  for(let i = 0; i < radios.length; i++){
+    if((radios[i]).checked)
+      return `type=${(radios[i]).value}`;
+  }
+  return null;
+};
+
+queryElements.getParamGenres = function(){
+  let boxes = document.querySelectorAll(`input[name='genre']`);
+  let toRet = [];
+  for(let i = 0; i < boxes.length; i++){
+    if((boxes[i]).checked)
+      toRet.push((boxes[i]).value);
+  }
+  if(toRet.length == 0)
+    return null
+  return `genres=${toRet.join(',')}`
+};
+
+queryElements.renderResults = function(resp_amimes){
+  // embed the result htmls first
+  // appendChild is NOT gonna be used, innerhtml acctually changed
+  let toIn = resp_amimes.map((js) => this.getResultHtml(js));
+  this.results.innerHTML = toIn.join('');
+};
+
+queryElements.getResultHtml = function(anime_json){
+  return `
+    <div class="w3-row-padding">
+      <div class="w3-quarter w3-margin-bottom">
+        <div class="w3-display-container">
+          <img src="${anime_json.img}" alt="House" style="width:100%">
+        </div>
+      </div>
+
+      <div class="w3-threequarter w3-margin-bottom">
+        <p>
+          <b>${anime_json.name}</b>
+        </p>
+        <p>
+          episodes: ${anime_json.episodes}
+        </p>
+        <p>
+          type: ${anime_json.type}
+        </p>
+        <p>
+          rating from MyAnimeList: ${anime_json.ratng}
+        </p>
+      </div>
+    </div>
+  `;
+};
 
 // init miscellaneous
 // the cover picture url is randomly picked from one below
