@@ -1,8 +1,5 @@
 // to be the end of <body>
 
-// check who is signed in if any
-bator.checkId();
-
 // fill in main section variables with elements
 // navbarElements completion
 navbarElements.root = document.getElementById('navbar_root');
@@ -22,9 +19,16 @@ queryElements.root = document.getElementById('query_root');
 queryElements.keywords = document.getElementById('query_keywords');
 queryElements.results = document.getElementById('query_results');
 queryElements.instruct = document.getElementById('query_instruct');
+queryElements.stat_root = document.getElementById('query_stat_root');
+queryElements.stat_holder = document.getElementById('query_stat_holder');
+queryElements.stat_loading = document.getElementById('query_stat_loading');
 
 // commentElements completion
 commentElements.root = document.getElementById('comment_root');
+
+// init current user data
+// check who is signed in if any
+bator.checkId();
 
 // Init the Elements attr based on current data and etc.
 // navbarElements init

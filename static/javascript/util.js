@@ -43,6 +43,9 @@ var beforeResultsReturn = function(){
     // hide the results
     queryElements.results.hidden = true;
 
+    // hide the results stat
+    queryElements.stat_root.hidden = true;
+
     // hide the comments
     commentElements.root.hidden = true;
 };
@@ -64,9 +67,30 @@ var whenResultsReturn = function(resp_animes){
 var doLoading = function(){
     goJapanese();
     navbarElements.loading.hidden = false;
-}
+};
 
 var doLoaded = function(){
     goEnglish();
     navbarElements.loading.hidden = true;
+};
+
+var signUp = function(){
+    let fieldValid = false;
+    let userName = '';
+    let password = '';
+    while(!fieldValid){
+        userName = prompt('enter your user name:');
+        if(userName == null) return // cancel button pressed
+        password = prompt('enter your password:');
+        if(password == null) return // cancel button pressed
+        fieldValid = userName && password;
+    }
+    console.log(userName);
+    console.log(password);
+
+    userName = `username=${userName}`;
+    password = `password=${password}`;
+
+    let urlToReq = `http://104.248.124.26:9000/signup?${joinAndIfExisit([userName,password])}`;
+    console.log(urlToReq);
 }

@@ -129,11 +129,26 @@ queryElements.focusOnSelectedAid = function(){
     console.log('no animes selected :(')
     return;
   }
+
+  // hide non focus result items
   let allQueryItems = document.querySelectorAll('div[data-aid]');
   allQueryItems.forEach((ele,eleIdx,nodeListCaller) => {
     if(ele.dataset.aid !== bator.selectedAnimeId)
       ele.hidden = true;
   });
+
+
+  // doloading
+
+  // unhide result section (hide the stat first)
+  // this.stat_holder.hidden = true;
+  // this.stat_loading.hidden = false;
+  // this.stat_root.hidden = false;
+  
+  // reach the server for stat
+
+  // reach the server for comment (doloaded here)
+  // unhide comment 
 };
 
 // init user
@@ -143,6 +158,20 @@ var bator = {};
 bator.checkId = function(){
   // set checking to prevent posting comments during checking
   bator.checking = true;
+
+  // grab user id from localStorage
+  grabbedUid = localStorage.getItem('uid');
+  
+  // 3 cases possible
+  // grabbedUid null
+  if(!grabbedUid){
+    doLoaded();
+    bator.checking = false;
+    navbarElements.doBatorNotSigned();
+  }
+
+  // uid not valid after checking with server
+  // uid valid after checking with server
 
   // navbarElements signed
   // doLoaded
