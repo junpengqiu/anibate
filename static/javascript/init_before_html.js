@@ -38,7 +38,7 @@ queryElements.search = function(){
   // console.log(keywords);
   // console.log(typeParam);
   // console.log(genres);
-  let urlToReq = `http://104.248.124.26:9000/query?${joinAndIfExisit([keywords,typeParam,genres])}`;
+  let urlToReq = `http://104.248.124.26:9000/query/anime?${joinAndIfExisit([keywords,typeParam,genres])}`;
   console.log(`requesting ${urlToReq}`);
 
   // render what the page is gonna like before results return
@@ -53,7 +53,7 @@ queryElements.search = function(){
       whenResultsReturn(resp_animes);
     }
     if (this.readyState == 4)
-      goEnglish()
+      doLoaded();
   };
   xhttp.open("GET", urlToReq, true);
   xhttp.send();
@@ -140,15 +140,76 @@ queryElements.focusOnSelectedAid = function(){
 
   // doloading
 
-  // unhide result section (hide the stat first)
+  // unhide stat section (hide the true contents first)
   // this.stat_holder.hidden = true;
   // this.stat_loading.hidden = false;
   // this.stat_root.hidden = false;
   
   // reach the server for stat
 
+  // reach teh server for side
+  querySideAnime();
+
   // reach the server for comment (doloaded here)
-  // unhide comment 
+  queryCommentAnime();
+
+};
+
+// commentElements method
+commentElements.getCommentInput = function(){
+  return commentElements.input.value;
+}
+
+commentElements.showSide = function(){
+  if(bator.selectedAnimeSide == -1){
+    this.sideinfo.textContent = 'You must side before comment:';
+  }else if(bator.selectedAnimeSide == 0){
+    this.sideinfo.textContent = 'You chose to stand AGAINST this anime!';
+  }else{
+    this.sideinfo.textContent = 'You chose to stand FOR this anime!';
+  }
+
+  this.for.hidden = bator.selectedAnimeSide != -1;
+  this.against.hidden = bator.selectedAnimeSide != -1;
+  this.betray.hidden = bator.selectedAnimeSide == -1;
+  this.side.hidden = false;
+};
+
+commentElements.showComment = function(coms){
+  
+  // sort by timestamp
+  coms.sort((x,y)=>y.timestamp - x.timestamp);
+
+  let toIn = coms.map(com => 
+    com.user_id == Number.parseInt(bator.uid) ?
+    `<div class="w3-row-padding">
+      <div class="w3-quarter">
+        <p><b>${com.name}</b></p>
+      </div>
+      <div class="w3-half">
+        <p>${decodeURIComponent(com.content)}</p>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-half">
+          <p style="text-align:center" onclick="changeCommentAnime(${com.timestamp})"><i>alter</i></p>
+        </div>
+        <div class="w3-half">
+          <p style="text-align:center" onclick="deleteCommentAnime(${com.timestamp})"><i>remove</i></p>
+        </div>
+      </div>
+    </div>`
+    :
+    `<div class="w3-row-padding">
+      <div class="w3-quarter">
+        <p>${com.name}</p>
+      </div>
+      <div class="w3-threequarter">
+        <p>${decodeURIComponent(com.content)}</p>
+      </div>
+    </div>`
+  );
+
+  this.disp.innerHTML = toIn.join('');
 };
 
 // init user
@@ -168,18 +229,23 @@ bator.checkId = function(){
     doLoaded();
     bator.checking = false;
     navbarElements.doBatorNotSigned();
+    return;
   }
 
-  // uid not valid after checking with server
+  // uid not valid after checking with server (temporarily not implemented, I assume user not so bad to set uid oneself)
   // uid valid after checking with server
-
-  // navbarElements signed
-  // doLoaded
-  // bator.checking = false;
+  this.uid = grabbedUid;
+  doLoaded();
+  bator.checking = false;
+  navbarElements.doBatorSigned();
 }
 
 bator.setAnimeId = function(aid){
   this.selectedAnimeId = aid;
+}
+
+bator.setAnimeSide = function(side){
+  this.selectedAnimeSide = side;
 }
 
 // init miscellaneous

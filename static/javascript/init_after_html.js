@@ -25,6 +25,13 @@ queryElements.stat_loading = document.getElementById('query_stat_loading');
 
 // commentElements completion
 commentElements.root = document.getElementById('comment_root');
+commentElements.disp = document.getElementById('comment_disp');
+commentElements.input = document.getElementById('comment_input');
+commentElements.side = document.getElementById('comment_side');
+commentElements.sideinfo = document.getElementById('comment_sideinfo');
+commentElements.for = document.getElementById('comment_for');
+commentElements.against = document.getElementById('comment_against');
+commentElements.betray = document.getElementById('comment_betray');
 
 // init current user data
 // check who is signed in if any

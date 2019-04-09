@@ -17,9 +17,9 @@
     <!-- Float links to the right. Hide them on small screens -->
     <div class="w3-right">
       <a class="w3-bar-item w3-button"><i id='navbar_loading'>Loading...</i></a>
-      <a class="w3-bar-item w3-button"><b id='navbar_signup' hidden>Sign-up</b></a>
-      <a class="w3-bar-item w3-button"><b id='navbar_login' hidden>Login</b></a>
-      <a class="w3-bar-item w3-button"><b id='navbar_logout' hidden>Logout</b></a>
+      <a class="w3-bar-item w3-button"><b id='navbar_signup' onclick="signUp()" hidden>Sign-up</b></a>
+      <a class="w3-bar-item w3-button"><b id='navbar_login' onclick="logIn()" hidden>Login</b></a>
+      <a class="w3-bar-item w3-button"><b id='navbar_logout' onclick="logOut()" hidden>Logout</b></a>
     </div>
   </div>
 </div>
@@ -109,16 +109,78 @@
 
 <!-- Comment Section -->
 <div id="comment_root" class="w3-content w3-padding" style="max-width:1564px" hidden>
-  <div class="w3-container w3-padding-32">
-    <p>make your comment</p>
-    <form action="http://104.248.124.26:9000/comment" onsubmit="(event)=>{event.preventDefault(); console.log(event)}">
-      <input class="w3-input w3-section w3-border" type="text" placeholder="Comment" name="comment">
-      <input id='comment_sessionId' name="sessionId" value="hey" hidden>
-      <input id='comment_animeId' name="animeId" value="820" hidden>
-      <button class="w3-button w3-black w3-section" type="submit">
-        <i class="fa fa-paper-plane"></i> SEND
+  <div>
+    <button class="w3-button w3-cyan w3-section" onclick="queryCommentAnime()">
+      <i class="fa fa-paper-plane"></i> REFRESH COMMENTS
+    </button>
+  </div>
+  <div id="comment_disp" class="w3-container w3-padding-32">
+    
+    <div class="w3-row-padding">
+      <div class="w3-quarter">
+        <p>other</p>
+      </div>
+      <div class="w3-threequarter">
+        <p>other's comment</p>
+      </div>
+    </div>
+    
+    <div class="w3-row-padding">
+      <div class="w3-quarter">
+        <p>me</p>
+      </div>
+      <div class="w3-half">
+        <p>my comment</p>
+      </div>
+      <div class="w3-quarter">
+        <div class="w3-half">
+          <p style="text-align:center">alter</p>
+        </div>
+        <div class="w3-half">
+          <p style="text-align:center">remove</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="w3-row-padding">
+      <div class="w3-quarter">
+        <p>other</p>
+      </div>
+      <div class="w3-threequarter">
+        <p>other's comment</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Comment Side Section -->
+  <div class="w3-container w3-padding-32" id="comment_side" hidden>
+    <p id="comment_sideinfo"> I don't know your side </p>
+
+    <div id="comment_for" style="float:left ; margin-right:8px">
+      <button class="w3-button w3-green w3-section" onclick="insertSideAnime(1)">
+        <i class="fa fa-paper-plane"></i> FOR
       </button>
-    </form>
+    </div>
+    
+    <div id="comment_against">
+      <button class="w3-button w3-red w3-section" onclick="insertSideAnime(1)">
+        <i class="fa fa-paper-plane"></i> AGAINST
+      </button>
+    </div>
+
+    <div id="comment_betray">
+      <button class="w3-button w3-orange w3-section" onclick="changeSideAnime()">
+        <i class="fa fa-paper-plane"></i> CHANGE SIDE
+      </button>
+    </div>
+  </div>
+
+  <div class="w3-container w3-padding-32">
+    <input id="comment_input" class="w3-input w3-section w3-border" type="text" placeholder="Comment" name="comment"></input>
+    <button class="w3-button w3-black w3-section" type="submit" onclick="insertCommentAnime()">
+      <i class="fa fa-paper-plane"></i> SEND
+    </button>
   </div>
 </div>
 
