@@ -38,7 +38,7 @@ queryElements.search = function(){
   // console.log(keywords);
   // console.log(typeParam);
   // console.log(genres);
-  let urlToReq = `http://104.248.124.26:9000/query/anime?${joinAndIfExisit([keywords,typeParam,genres])}`;
+  let urlToReq = `http://104.248.124.26:9000/query/anime?${joinAndIfExisit([keywords,typeParam,genres])}&jsonly=1`;
   console.log(`requesting ${urlToReq}`);
 
   // render what the page is gonna like before results return
@@ -51,12 +51,38 @@ queryElements.search = function(){
       let resp_animes = JSON.parse(this.responseText);
       // pass the resp_amimes to render what to disp after results return
       whenResultsReturn(resp_animes);
+      // do another xml request for img url
+      queryElements.getImgAfterJson(`http://104.248.124.26:9000/query/anime?${joinAndIfExisit([keywords,typeParam,genres])}`);
     }
     if (this.readyState == 4)
       doLoaded();
   };
   xhttp.open("GET", urlToReq, true);
   xhttp.send();
+};
+
+queryElements.getImgAfterJson = function(url){
+  // passing url with jsonly not set will have img attr in returned json
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
+      // array of anime jsons
+      let resp_animes = JSON.parse(this.responseText);
+      // pass img url to corresponding img tags
+      queryElements.updateImgTag(resp_animes);
+    }
+  };
+
+  xhttp.open("GET", url, true);
+  xhttp.send();
+};
+
+queryElements.updateImgTag = function(resp_json){
+  resp_json.map(js=>{
+    let imgTag = document.getElementById(`anime-img-${js.id}`);
+    if(!imgTag) return;
+    imgTag.src = js.img;
+  });
 };
 
 queryElements.getParamKeywords = function(){
@@ -100,7 +126,7 @@ queryElements.getResultHtml = function(anime_json){
     <div data-aid="${anime_json.id}" class="w3-row-padding">
       <div class="w3-quarter w3-margin-bottom">
         <div class="w3-display-container">
-          <img src="${anime_json.img}" alt="House" style="width:100%">
+          <img id="anime-img-${anime_json.id}" src="${anime_json.img ? anime_json.img : 'img/loading.jpg'}" alt="AnimePic" style="width:100%">
         </div>
       </div>
 

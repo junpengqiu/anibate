@@ -61,16 +61,24 @@ var queryAnime = function(req, res){
 
     let sql = `SELECT * FROM Anime WHERE ${condGen(params)}`;
     console.log(`sql: ${sql}`);
-    con.query(sql, function(err, results, fields){
-        if(err) throw err;
-        if(!results){
+    if(!params.jsonly){
+        con.query(sql, function(err, results, fields){
+            if(err) throw err;
+            if(!results){
+                res.end(JSON.stringify(results));
+            }else{
+                idArr = results.map((result)=>result.id);
+                getPicRecursive(res, req, results, 0);
+            }
+            
+        });
+    }else{
+        con.query(sql, function(err, results, fields){
+            if(err) throw err;
             res.end(JSON.stringify(results));
-        }else{
-            idArr = results.map((result)=>result.id);
-            getPicRecursive(res, req, results, 0);
-        }
-        
-    });
+        });
+    }
+    
 };
 
 module.exports.queryAnime = queryAnime;
