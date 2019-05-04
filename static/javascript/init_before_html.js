@@ -126,7 +126,7 @@ queryElements.getResultHtml = function(anime_json){
     <div data-aid="${anime_json.id}" class="w3-row-padding">
       <div class="w3-quarter w3-margin-bottom">
         <div class="w3-display-container">
-          <img id="anime-img-${anime_json.id}" src="${anime_json.img ? anime_json.img : 'img/loading.jpg'}" alt="AnimePic" style="width:100%">
+          <img id="anime-img-${anime_json.id}" src="${anime_json.img ? anime_json.img : ifRec()?'img/rec.jpg':'img/loading.jpg'}" alt="AnimePic" style="width:100%">
         </div>
       </div>
 
@@ -195,7 +195,7 @@ queryElements.getRecommend = function(){
       bator.setAnimeId(`${resp_animes[0].id}`);
       queryElements.focusOnSelectedAid();
       // hide image
-      document.getElementById(`anime-img-${resp_animes[0].id}`).hidden = true;
+      // document.getElementById(`anime-img-${resp_animes[0].id}`).hidden = true;
       // do another xml request for img url
       // queryElements.getImgAfterJson(`http://104.248.124.26:9000/query/anime?${joinAndIfExisit([keywords,typeParam,genres])}`);
     }
@@ -213,7 +213,11 @@ commentElements.getCommentInput = function(){
 
 commentElements.showSide = function(){
   if(bator.selectedAnimeSide == -1){
-    this.sideinfo.textContent = 'You must side before comment:';
+    if(!ifRec()){
+      this.sideinfo.textContent = 'You must side before comment:';
+    }else{
+      this.sideinfo.textContent = 'Please let us know your side';
+    }
   }else if(bator.selectedAnimeSide == 0){
     this.sideinfo.textContent = 'You chose to stand AGAINST this anime!';
   }else{

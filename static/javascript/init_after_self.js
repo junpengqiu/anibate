@@ -55,6 +55,10 @@ var promtUpdateLove = function(ratio){
     let genre = prompt("Type in the genre name");
     if(genre === null) return;
 
+    // easter egg
+    if(genre === "Romance" && ratio < 1)
+        document.getElementById("eastermp3").play();
+
     let urlToReq = `http://104.248.124.26:9000/update/love?user_id=${bator.uid}&genre=${genre}&ratio=${ratio}`;
     console.log(urlToReq);
     
@@ -77,11 +81,13 @@ var changeLock = function(){
     
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
-        let resp_json = JSON.parse(this.responseText);
-        if(resp_json[0].lock_rec == 0){
-            window.alert("your tastes have been unlocked");
-        }else{
-            window.alert("your tastes have been locked");
+        if (this.readyState == 4 && this.status == 200){
+            let resp_json = JSON.parse(this.responseText);
+            if(resp_json[0].lock_rec == 0){
+                window.alert("your tastes have been unlocked");
+            }else{
+                window.alert("your tastes have been locked");
+            }
         }
     };
     xhttp.open("GET", urlToReq, true);
