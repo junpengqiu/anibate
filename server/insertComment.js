@@ -28,7 +28,7 @@ var insertComment = function(req, res){
     // url.parse convert params.content to decoded
     params.content = encodeURIComponent(params.content);
     let sql = `INSERT INTO Comment 
-    SELECT ${params.anime_id}, ${params.user_id}, ${Date.now() - 1554700000000}, '${params.content}', side 
+    SELECT ${params.anime_id}, ${params.user_id}, ${Date.now() - 1557008968808}, '${params.content}', side 
     FROM Side WHERE anime_id=${params.anime_id} and user_id=${params.user_id}`;
     console.log(`sql: ${sql}`);
 

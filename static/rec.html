@@ -17,8 +17,6 @@
     <!-- Float links to the right. Hide them on small screens -->
     <div class="w3-right">
       <a class="w3-bar-item w3-button"><i id='navbar_loading'>Loading...</i></a>
-      <a class="w3-bar-item w3-button" href="self.html" target="_blank"><b id='navbar_rec'>Idimage</b></a>
-      <a class="w3-bar-item w3-button" href="rec.html" target="_blank"><b id='navbar_rec'>Recommend</b></a>
       <a class="w3-bar-item w3-button"><b id='navbar_signup' onclick="signUp()" hidden>Sign-up</b></a>
       <a class="w3-bar-item w3-button"><b id='navbar_login' onclick="logIn()" hidden>Login</b></a>
       <a class="w3-bar-item w3-button"><b id='navbar_logout' onclick="logOut()" hidden>Logout</b></a>
@@ -38,7 +36,7 @@
 <!-- Query Section -->
 <div id="query_root" class="w3-content w3-padding" style="max-width:1564px">
   <!-- Query Input -->
-  <div class="w3-container w3-padding-32">
+  <div class="w3-container w3-padding-32" hidden>
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Search Anime</h3>
     <input id='query_keywords' class="w3-input w3-section w3-border" type="text" placeholder="Keywords">
     <button class="w3-button w3-blue w3-section" onclick="queryElements.search()">
@@ -71,6 +69,9 @@
   </div>
 
   <!-- Query Results -->
+  <div class="w3-container w3-padding-32">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Recommendation</h3>
+  </div>
   <div id="query_results" hidden>
     
   </div>
@@ -102,7 +103,7 @@
   <!-- Show When No Query Results -->
   <div class="w3-container w3-padding-32" id="query_instruct">
     <p style="text-align:center">
-      Search the Anime(s) from the bar above
+      Loading Recommendation
     </p>
   </div>
 
@@ -160,29 +161,22 @@
     <p id="comment_sideinfo"> I don't know your side </p>
 
     <div id="comment_for" style="float:left ; margin-right:8px">
-      <button class="w3-button w3-green w3-section" onclick="insertSideAnime(1)">
+      <button class="w3-button w3-green w3-section" onclick="insertSideAnime(1);">
         <i class="fa fa-paper-plane"></i> FOR
       </button>
     </div>
     
     <div id="comment_against">
-      <button class="w3-button w3-red w3-section" onclick="insertSideAnime(0)">
+      <button class="w3-button w3-red w3-section" onclick="insertSideAnime(0);">
         <i class="fa fa-paper-plane"></i> AGAINST
       </button>
     </div>
 
     <div id="comment_betray">
-      <button class="w3-button w3-orange w3-section" onclick="changeSideAnime()">
+      <button class="w3-button w3-orange w3-section" onclick="changeSideAnime();">
         <i class="fa fa-paper-plane"></i> CHANGE SIDE
       </button>
     </div>
-  </div>
-
-  <div class="w3-container w3-padding-32">
-    <input id="comment_input" class="w3-input w3-section w3-border" type="text" placeholder="Comment" name="comment"></input>
-    <button class="w3-button w3-black w3-section" type="submit" onclick="insertCommentAnime()">
-      <i class="fa fa-paper-plane"></i> SEND
-    </button>
   </div>
 </div>
 
@@ -195,5 +189,6 @@
 
 <!-- JS after HTML Constructed -->
 <script src="./javascript/init_after_html.js" type="application/javascript" charset="EUC-JP"></script>
+<script src="./javascript/init_after_rec.js" type="application/javascript" charset="EUC-JP"></script>
 </body>
 </html>

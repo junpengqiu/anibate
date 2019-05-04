@@ -181,6 +181,31 @@ queryElements.focusOnSelectedAid = function(){
 
 };
 
+queryElements.getRecommend = function(){
+  console.log('hey');
+  let urlToReq = `http://104.248.124.26:9000/calc/recommend?user_id=${bator.uid}`;
+  let xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200){
+      // array of anime jsons
+      let resp_animes = JSON.parse(this.responseText);
+      // pass the resp_amimes to render what to disp after results return
+      whenResultsReturn(resp_animes);
+      // focus on the rec anime
+      bator.setAnimeId(`${resp_animes[0].id}`);
+      queryElements.focusOnSelectedAid();
+      // hide image
+      document.getElementById(`anime-img-${resp_animes[0].id}`).hidden = true;
+      // do another xml request for img url
+      // queryElements.getImgAfterJson(`http://104.248.124.26:9000/query/anime?${joinAndIfExisit([keywords,typeParam,genres])}`);
+    }
+    if (this.readyState == 4)
+      doLoaded();
+  };
+  xhttp.open("GET", urlToReq, true);
+  xhttp.send();
+};
+
 // commentElements method
 commentElements.getCommentInput = function(){
   return commentElements.input.value;

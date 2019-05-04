@@ -20,7 +20,7 @@ var joinAndIfExisit = function(condArr){
         }
     }
     return toRet;
-}
+};
 
 var insertSide = function(req, res){
     let params = url.parse(req.url, true).query;

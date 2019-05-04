@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="css/index.css">
   <script src="./javascript/init_before_html.js" type="application/javascript" charset="EUC-JP"></script>
   <script src="./javascript/util.js" type="application/javascript" charset="EUC-JP"></script>
+  <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+  <script>
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+  </script>
 </head>
 <body>
 
@@ -17,8 +22,6 @@
     <!-- Float links to the right. Hide them on small screens -->
     <div class="w3-right">
       <a class="w3-bar-item w3-button"><i id='navbar_loading'>Loading...</i></a>
-      <a class="w3-bar-item w3-button" href="self.html" target="_blank"><b id='navbar_rec'>Idimage</b></a>
-      <a class="w3-bar-item w3-button" href="rec.html" target="_blank"><b id='navbar_rec'>Recommend</b></a>
       <a class="w3-bar-item w3-button"><b id='navbar_signup' onclick="signUp()" hidden>Sign-up</b></a>
       <a class="w3-bar-item w3-button"><b id='navbar_login' onclick="logIn()" hidden>Login</b></a>
       <a class="w3-bar-item w3-button"><b id='navbar_logout' onclick="logOut()" hidden>Logout</b></a>
@@ -38,7 +41,7 @@
 <!-- Query Section -->
 <div id="query_root" class="w3-content w3-padding" style="max-width:1564px">
   <!-- Query Input -->
-  <div class="w3-container w3-padding-32">
+  <div class="w3-container w3-padding-32" hidden>
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Search Anime</h3>
     <input id='query_keywords' class="w3-input w3-section w3-border" type="text" placeholder="Keywords">
     <button class="w3-button w3-blue w3-section" onclick="queryElements.search()">
@@ -70,41 +73,32 @@
     
   </div>
 
-  <!-- Query Results -->
-  <div id="query_results" hidden>
-    
-  </div>
-    
-  <!-- Query Stat -->
-  <div id="query_stat_root" class="w3-row-padding" hidden>
-    <h3 id="query_stat_title" class="w3-border-bottom w3-border-light-grey w3-padding-16">Stats</h3>
-    <div id="query_stat_loading" class="w3-margin-bottom">
-      <p>
-        Loading Query Stats
-      </p>
+    <!-- Query Results -->
+    <div class="w3-container w3-padding-32">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Idimage</h3>
+    <div id="myChart"><a class="zc-ref" href="https://www.zingchart.com">Powered by ZingChart</a></div>
     </div>
-    <div id="query_stat_holder" class="w3-margin-bottom">
-      <p>
-        Star 0~1: 100
-      </p>
-      <p>
-        Star 1~2: 14
-      </p>
-      <p>
-        Star 2~3: 13
-      </p>
-      <p>
-        Star 3~4: 11
-      </p>
-    </div>
-  </div>
 
-  <!-- Show When No Query Results -->
-  <div class="w3-container w3-padding-32" id="query_instruct">
-    <p style="text-align:center">
-      Search the Anime(s) from the bar above
-    </p>
-  </div>
+    <!-- Love Ctrl Root-->
+    <div id="lovectrl_root" class="w3-container w3-padding-32" style="max-width:1564px">
+        <div id="lovectrl_more" style="float:left ; margin-right:8px">
+            <button class="w3-button w3-green w3-section" onclick="promtUpdateLove(1.8);">
+                <i class="fa fa-paper-plane"></i> More Into
+            </button>
+        </div>
+            
+        <div id="lovectrl_less">
+            <button class="w3-button w3-red w3-section" onclick="promtUpdateLove(0.6);">
+                <i class="fa fa-paper-plane"></i> Less Into
+            </button>
+        </div>
+        
+        <div id="lovectrl_lock">
+            <button class="w3-button w3-orange w3-section" onclick="changeLock();">
+                <i class="fa fa-paper-plane"></i> Lock/Unlock
+            </button>
+        </div>
+    </div>
 
 </div>
 
@@ -160,29 +154,22 @@
     <p id="comment_sideinfo"> I don't know your side </p>
 
     <div id="comment_for" style="float:left ; margin-right:8px">
-      <button class="w3-button w3-green w3-section" onclick="insertSideAnime(1)">
+      <button class="w3-button w3-green w3-section" onclick="insertSideAnime(1);">
         <i class="fa fa-paper-plane"></i> FOR
       </button>
     </div>
     
     <div id="comment_against">
-      <button class="w3-button w3-red w3-section" onclick="insertSideAnime(0)">
+      <button class="w3-button w3-red w3-section" onclick="insertSideAnime(0);">
         <i class="fa fa-paper-plane"></i> AGAINST
       </button>
     </div>
 
     <div id="comment_betray">
-      <button class="w3-button w3-orange w3-section" onclick="changeSideAnime()">
+      <button class="w3-button w3-orange w3-section" onclick="changeSideAnime();">
         <i class="fa fa-paper-plane"></i> CHANGE SIDE
       </button>
     </div>
-  </div>
-
-  <div class="w3-container w3-padding-32">
-    <input id="comment_input" class="w3-input w3-section w3-border" type="text" placeholder="Comment" name="comment"></input>
-    <button class="w3-button w3-black w3-section" type="submit" onclick="insertCommentAnime()">
-      <i class="fa fa-paper-plane"></i> SEND
-    </button>
   </div>
 </div>
 
@@ -195,5 +182,6 @@
 
 <!-- JS after HTML Constructed -->
 <script src="./javascript/init_after_html.js" type="application/javascript" charset="EUC-JP"></script>
+<script src="./javascript/init_after_self.js" type="application/javascript" charset="EUC-JP"></script>
 </body>
 </html>

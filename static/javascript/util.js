@@ -64,6 +64,13 @@ var whenResultsReturn = function(resp_animes){
     doLoaded();
 };
 
+var whenRecReturn = function(resp_animes){
+    whenResultsReturn(resp_animes);
+    if(resp_animes.length == 0) return;
+    bator.setAnimeId(resp_animes[0].id); 
+    queryElements.focusOnSelectedAid();
+}
+
 var doLoading = function(){
     goJapanese();
     navbarElements.loading.hidden = false;
@@ -189,7 +196,13 @@ var insertSideAnime = function(side){
                 window.alert(retJs.err.sqlMessage);
                 return;
             }else{
-                querySideAnime();
+                // in recommend section, get new rec
+                if(ifRec()){
+                    console.log('ouch')
+                    queryElements.getRecommend();
+                }else{
+                    querySideAnime();
+                }
             }
         }
         if (this.readyState == 4)
@@ -199,6 +212,15 @@ var insertSideAnime = function(side){
     xhttp.open("GET", url, true);
     xhttp.send();
 };
+
+// determine if this is recommend page, see init_after_rec for example
+var ifRec = function(){
+    if(bator.pageNow){
+        return bator.pageNow === "recommend";
+    }
+    return false;
+}
+
 
 var querySideAnime = function(){
     // and them show the side info with asscoiated buttons on web page
